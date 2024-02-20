@@ -24,6 +24,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	case <-ctx.Done():
 		// impreme no command line
+		// caso o cliente cancele a requesição
 		log.Println("Request cancelada pelo client")
 	}
 
