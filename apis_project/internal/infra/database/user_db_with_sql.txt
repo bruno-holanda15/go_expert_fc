@@ -1,0 +1,49 @@
+// OPÇÃO UTILIZANDO sql
+package database
+
+import (
+	"database/sql"
+
+	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity"
+)
+
+type User struct {
+	DB *sql.DB
+}
+
+func NewUser(db *sql.DB) *User {
+	return &User{
+		DB: db,
+	}
+}
+
+func (u *User) Create(user *entity.User) error {
+	stmt, err := u.DB.Prepare("insert into users(id, name, email, password) values(?, ?, ?, ?)")
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(user.ID, user.Name, user.Email, user.Password)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *User) FindByEmail(email string) (*entity.User, error) {
+	stmt, err := u.DB.Prepare("select id, name, email, password where email = ?")
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var user entity.User
+	err = stmt.QueryRow(email).Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
