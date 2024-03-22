@@ -36,4 +36,8 @@ func TestProductValidate(t *testing.T) {
 	assert.NotNil(t, product)
 	assert.Nil(t, err)
 	assert.NoError(t, product.Validate())
+
+	product, err = NewProduct("ALiExpress P", 0)
+	assert.Error(t, err, ErrPriceIsRequired)
+	assert.Nil(t, product)
 }
