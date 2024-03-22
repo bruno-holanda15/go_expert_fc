@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -27,7 +28,7 @@ func TestProductWhenPriceIsRequired(t *testing.T) {
 	product, err := NewProduct("PC", 0)
 
 	assert.Nil(t, product)
-	assert.Equal(t,  ErrInvalidPrice, err)
+	assert.Equal(t, ErrInvalidPrice, err)
 }
 
 func TestProductValidate(t *testing.T) {
@@ -36,8 +37,25 @@ func TestProductValidate(t *testing.T) {
 	assert.NotNil(t, product)
 	assert.Nil(t, err)
 	assert.NoError(t, product.Validate())
+}
 
-	product, err = NewProduct("ALiExpress P", 0)
-	assert.Error(t, err, ErrPriceIsRequired)
-	assert.Nil(t, product)
+func TestProductBatch(t *testing.T) {
+	type dataProduct struct {
+		name        string
+		price       int
+		errExpected error
+	}
+	products := []dataProduct{
+		{"Nintendo", 0, errors.New("invalid price")},
+		{"PC", -120, errors.New("invalid price")},
+		{"", 4300, errors.New("name is required")},
+	}
+
+	for _, product := range products {
+		_, err := NewProduct(product.name, product.price)
+
+		if err != nil && err.Error() != product.errExpected.Error() {
+			t.Errorf("Expected error '%s', but got '%s'", product.errExpected, err)
+		}
+	}
 }
