@@ -8,31 +8,31 @@ import (
 )
 
 func TestNewProduct(t *testing.T) {
-	product, err := NewProduct("ps5", 4000)
+	product, err := NewProduct("ps5", 400.0)
 
 	assert.NotEmpty(t, product.Name)
 	assert.NotNil(t, product.Price)
 	assert.Nil(t, err)
 	assert.Equal(t, "ps5", product.Name)
-	assert.Equal(t, 4000, product.Price)
+	assert.Equal(t, 400.0, product.Price)
 }
 
 func TestProductWhenNameIsRequired(t *testing.T) {
-	product, err := NewProduct("", 1000)
+	product, err := NewProduct("", 100.0)
 
 	assert.Nil(t, product)
 	assert.Equal(t, ErrNameIsRequired, err)
 }
 
 func TestProductWhenPriceIsRequired(t *testing.T) {
-	product, err := NewProduct("PC", 0)
+	product, err := NewProduct("PC", 0.0)
 
 	assert.Nil(t, product)
 	assert.Equal(t, ErrInvalidPrice, err)
 }
 
 func TestProductValidate(t *testing.T) {
-	product, err := NewProduct("Nintendo", 2000)
+	product, err := NewProduct("Nintendo", 200.0)
 
 	assert.NotNil(t, product)
 	assert.Nil(t, err)
@@ -42,13 +42,13 @@ func TestProductValidate(t *testing.T) {
 func TestProductBatch(t *testing.T) {
 	type dataProduct struct {
 		name        string
-		price       int
+		price       float64
 		errExpected error
 	}
 	products := []dataProduct{
-		{"Nintendo", 0, errors.New("invalid price")},
-		{"PC", -120, errors.New("invalid price")},
-		{"", 4300, errors.New("name is required")},
+		{"Nintendo", 0.0, errors.New("invalid price")},
+		{"PC", -120.0, errors.New("invalid price")},
+		{"", 430.0, errors.New("name is required")},
 	}
 
 	for _, product := range products {
