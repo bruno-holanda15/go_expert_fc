@@ -1,10 +1,10 @@
 mode: set
+github.com/bruno-holanda15/go_expert_fc/APIs_project/cmd/server/main.go:5.13,8.2 2 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/configs/config.go:21.45,31.16 8 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/configs/config.go:31.16,32.13 1 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/configs/config.go:35.2,36.16 2 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/configs/config.go:36.16,37.13 1 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/configs/config.go:40.2,42.17 2 0
-github.com/bruno-holanda15/go_expert_fc/APIs_project/cmd/server/main.go:5.13,8.2 2 0
 github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity/product.go:25.63,26.16 1 1
 github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity/product.go:26.16,28.3 1 1
 github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity/product.go:30.2,30.16 1 1

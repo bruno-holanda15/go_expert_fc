@@ -12,8 +12,6 @@ import (
 	"gorm.io/driver/sqlite"
 )
 
-var db *gorm.DB
-
 func setup(t *testing.T) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("file::memory"), &gorm.Config{})
 	if err != nil {
