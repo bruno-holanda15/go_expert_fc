@@ -1,0 +1,7 @@
+POST http://localhost:8001/products
+Content-Type: application/json
+
+{
+    "name": "PS5",
+    "price": 3500
+}
