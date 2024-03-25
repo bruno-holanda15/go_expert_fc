@@ -9,6 +9,9 @@ import (
 	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/infra/webserver"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
@@ -27,6 +30,10 @@ func main() {
 	productDB := database.NewProductDB(db)
 	productHandler := webserver.NewProductHandler(productDB)
 
-	http.HandleFunc("/products", productHandler.CreateProduct)
-	http.ListenAndServe(":8001", nil)
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Post("/products", productHandler.CreateProduct)
+	// http.HandleFunc("/products", productHandler.CreateProduct)
+
+	http.ListenAndServe(":8001", r)
 }
