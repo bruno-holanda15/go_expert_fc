@@ -7,6 +7,7 @@ import (
 	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/dto"
 	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity"
 	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/infra/database"
+	"github.com/go-chi/chi/v5"
 )
 
 type ProductHandler struct {
@@ -43,4 +44,26 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	product, err := h.ProductDB.FindById(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	pr, err := json.Marshal(product)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Write(pr)
 }

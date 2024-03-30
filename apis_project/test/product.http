@@ -5,3 +5,7 @@ Content-Type: application/json
     "name": "PS5",
     "price": 3500
 }
+
+###
+GET http://localhost:8001/product/41a73535-58e7-4055-883d-69a7ca739c9a
+Content-Type: application/json
