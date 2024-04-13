@@ -1,11 +1,28 @@
-POST http://localhost:8001/products
+POST http://localhost:8001/product
 Content-Type: application/json
 
 {
-    "name": "PS5",
-    "price": 3500
+    "name": "Keycron",
+    "price": 1500
 }
 
 ###
-GET http://localhost:8001/product/41a73535-58e7-4055-883d-69a7ca739c9a
+GET http://localhost:8001/product/db1aa178-fd59-432f-848a-d6b0286a969d
 Content-Type: application/json
+
+###
+GET http://localhost:8001/products
+Content-Type: application/json
+
+###
+DELETE  http://localhost:8001/product/ac2b447b-f780-4804-8790-bc1af5c72992
+Content-Type: application/json
+
+###
+PUT  http://localhost:8001/product/db1aa178-fd59-432f-848a-d6b0286a969d
+Content-Type: application/json
+
+{
+    "name": "Nintendo Switch Updated",
+    "price": 2500
+}

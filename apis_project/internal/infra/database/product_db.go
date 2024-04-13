@@ -1,6 +1,8 @@
 package database
 
 import (
+	"time"
+
 	"github.com/bruno-holanda15/go_expert_fc/APIs_project/internal/entity"
 	"gorm.io/gorm"
 )
@@ -34,7 +36,7 @@ func (p *Product) Update(product *entity.Product) error {
 	if err != nil {
 		return err
 	}
-
+	product.UpdatedAt = time.Now()
 	return p.DB.Save(product).Error
 }
 
