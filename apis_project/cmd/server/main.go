@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/jwtauth"
 )
 
 func main() {
@@ -39,11 +40,15 @@ func main() {
 	r.Use(middleware.WithValue("jwt", configs.TokenAuth))
 	r.Use(middleware.WithValue("JwtExperesIn", configs.JWTExpiresIn))
 
-	r.Post("/product", productHandler.CreateProduct)
-	r.Get("/product/{id}", productHandler.GetProduct)
-	r.Get("/products", productHandler.GetProducts)
-	r.Put("/product/{id}", productHandler.UpdateProduct)
-	r.Delete("/product/{id}", productHandler.DeleteProduct)
+	r.Route("/product", func(r chi.Router) {
+		r.Use(jwtauth.Verifier(&configs.TokenAuth))
+		r.Use(jwtauth.Authenticator)
+		r.Post("/", productHandler.CreateProduct)
+		r.Get("/", productHandler.GetProducts)
+		r.Get("/{id}", productHandler.GetProduct)
+		r.Put("/{id}", productHandler.UpdateProduct)
+		r.Delete("/{id}", productHandler.DeleteProduct)
+	})
 
 	r.Post("/user", userHandler.CreateUser)
 	r.Post("/user/generate_token", userHandler.GetJWT)

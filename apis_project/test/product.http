@@ -11,7 +11,8 @@ GET http://localhost:8001/product/db1aa178-fd59-432f-848a-d6b0286a969d
 Content-Type: application/json
 
 ###
-GET http://localhost:8001/products
+GET http://localhost:8001/product
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMzMDg5MzIsInN1YiI6IjJmNjg1N2FmLWYxNWItNGE4OC1hYTY3LTAyZGNjNmZhZjJhMiJ9.qNngs_JXRGH2YXdD1HTx674su0xn5PttqHtn7gYRTWA
 Content-Type: application/json
 
 ###
