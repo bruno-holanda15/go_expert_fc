@@ -1,10 +1,10 @@
 package main
 
-// Thread 1
+// goroutine 1
 func main() {
 	forever := make(chan bool)
 
-	go func ()  {
+	go func() {
 		for i := 0; i < 10; i++ {
 			println(i)
 		}

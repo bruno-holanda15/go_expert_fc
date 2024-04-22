@@ -14,18 +14,18 @@ func task(name string, wg *sync.WaitGroup) {
 	}
 }
 
-// Thread 1 -> main já é uma go routine/thread
+// goroutine 1 -> main já é uma go routine/thread
 func main() {
 	waitGroup := sync.WaitGroup{}
 	waitGroup.Add(15)
 
-	// Thread 2
+	// goroutine 2
 	go task("Deploy", &waitGroup)
 
-	// Thread 3
+	// goroutine 3
 	go task("Build", &waitGroup)
 
-	// Thread 4
+	// goroutine 4
 	go func() {
 		for i := 0; i < 5; i++ {
 			fmt.Printf("%d: Task %s is running\n", i, "Func Anônima")
@@ -35,8 +35,8 @@ func main() {
 	}()
 
 	waitGroup.Wait()
-	// Caso não tenha algo que "prenda" a função main e só rodem as threads em backgroung
+	// Caso não tenha algo que "prenda" a função main e só rodem as goroutines em backgroung
 	// o código irá "finalizar" e sair
-	// Com os waitGroups, conseguimos mapear quantas threads estão em execução,
+	// Com os waitGroups, conseguimos mapear quantas goroutines estão em execução,
 	// criadas e esperar essas operações serem finalizadas
 }
