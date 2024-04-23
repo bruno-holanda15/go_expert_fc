@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-
 func main() {
 	data := make(chan int)
 	QtdWorkers := 100
@@ -15,8 +14,7 @@ func main() {
 		go worker(i, data)
 	}
 
-
-	for i := 0; i < 1000; i++ {
+	for i := 0; i < 2000; i++ {
 		data <- i // enviando para o canal o i
 	}
 }
