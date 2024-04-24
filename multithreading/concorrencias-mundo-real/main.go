@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"runtime"
 	"sync/atomic"
 
 	// "sync"
@@ -19,7 +20,7 @@ func main() {
 		atomic.AddUint64(&number, 1)
 		// m.Unlock()
 		time.Sleep(300 * time.Millisecond)
-		w.Write([]byte(fmt.Sprintf("Olá, você é o visitante número %d", number)))
+		w.Write([]byte(fmt.Sprintf("Olá, você é o visitante número %d - Número de processadores %d", number, runtime.NumCPU())))
 	})
 
 	http.ListenAndServe(":3000", nil)
