@@ -23,9 +23,8 @@ func newCmdCreateCategory(catDB *database.Category) RunEFunc {
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command.`,
+	Short: "Create Category.",
+	Long: `Create Category new version.`,
 	RunE: newCmdCreateCategory(GetCategory(GetDB())),
 }
 
@@ -39,14 +38,4 @@ func init() {
 
 	createCmd.MarkFlagRequired("name")
 	createCmd.MarkFlagRequired("description")
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// createCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
