@@ -1,14 +1,32 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
+	"cli_cobra/internal/database"
+	"database/sql"
 	"os"
 
 	"github.com/spf13/cobra"
+	_ "github.com/mattn/go-sqlite3"
+
 )
+
+type RunEFunc func(cmd *cobra.Command, args []string) error
+
+func GetDB() *sql.DB {
+	db, err := sql.Open("sqlite3", "./data.db")
+	if err != nil {
+		panic(err)
+	}
+
+	return db
+}
+
+func GetCategory(db *sql.DB) *database.Category {
+	return database.NewCategory(db)
+}
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -45,5 +63,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-
