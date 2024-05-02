@@ -1,8 +1,13 @@
 package events
 
-import "errors"
+import (
+	"errors"
+)
 
-var ErrHandlerAlreadyRegistered = errors.New("handler already registered")
+var (
+	ErrHandlerAlreadyRegistered = errors.New("handler already registered")
+	ErrHandlerNotRegistered     = errors.New("handler not registered")
+)
 
 type EventDispatcher struct {
 	handlers map[string][]EventHandlerInterface
@@ -23,6 +28,19 @@ func (ed *EventDispatcher) Register(eventName string, handler EventHandlerInterf
 	return nil
 }
 
+func (ed *EventDispatcher) Remove(eventName string, handler EventHandlerInterface) error {
+	if _, ok := ed.handlers[eventName]; ok {
+		for i, h := range ed.handlers[eventName] {
+			if h == handler {
+				// shift
+				ed.handlers[eventName] = append(ed.handlers[eventName][:i], ed.handlers[eventName][i+1:]...)
+			}
+		}
+	}
+
+	return nil
+}
+
 func (ed *EventDispatcher) Dispatch(event EventInterface) error {
 	if handlers, ok := ed.handlers[event.GetName()]; ok {
 		for _, h := range handlers {
@@ -37,9 +55,9 @@ func (ed *EventDispatcher) Clear() {
 	ed.handlers = make(map[string][]EventHandlerInterface)
 }
 
-func (ed *EventDispatcher) Has(event string, handler EventHandlerInterface) bool {
-	if _, ok := ed.handlers[event]; ok {
-		for _, h := range ed.handlers[event] {
+func (ed *EventDispatcher) Has(eventName string, handler EventHandlerInterface) bool {
+	if _, ok := ed.handlers[eventName]; ok {
+		for _, h := range ed.handlers[eventName] {
 			if h == handler {
 				return true
 			}
