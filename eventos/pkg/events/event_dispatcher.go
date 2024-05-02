@@ -15,13 +15,10 @@ func NewEventDispatcher() *EventDispatcher {
 }
 
 func (ed *EventDispatcher) Register(eventName string, handler EventHandlerInterface) error {
-	if _, ok := ed.handlers[eventName]; ok {
-		for _,h := range ed.handlers[eventName] {
-			if h == handler {
-				return ErrHandlerAlreadyRegistered
-			}
-		}
+	if ok := ed.Has(eventName, handler); ok {
+		return ErrHandlerAlreadyRegistered
 	}
+
 	ed.handlers[eventName] = append(ed.handlers[eventName], handler)
 	return nil
 }
