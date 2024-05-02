@@ -23,6 +23,16 @@ func (ed *EventDispatcher) Register(eventName string, handler EventHandlerInterf
 	return nil
 }
 
+func (ed *EventDispatcher) Dispatch(event EventInterface) error {
+	if handlers, ok := ed.handlers[event.GetName()]; ok {
+		for _, h := range handlers {
+			h.Handle(event)
+		}
+	}
+
+	return nil
+}
+
 func (ed *EventDispatcher) Clear() {
 	ed.handlers = make(map[string][]EventHandlerInterface)
 }
