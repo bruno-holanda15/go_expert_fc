@@ -1,11 +1,12 @@
 package events
 
 import (
+	"sync"
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -30,7 +31,7 @@ type TestEventHandler struct {
 	ID int
 }
 
-func (h *TestEventHandler) Handle(event EventInterface) {}
+func (h *TestEventHandler) Handle(event EventInterface, wg *sync.WaitGroup) {}
 
 type EventDispatcherTestSuite struct {
 	suite.Suite
@@ -114,27 +115,37 @@ type MockHandler struct {
 	mock.Mock
 }
 
-func (mo *MockHandler) Handle(event EventInterface) {
+func (mo *MockHandler) Handle(event EventInterface, wg *sync.WaitGroup) {
 	mo.Called(event)
+	wg.Done()
 }
 
 func (suite *EventDispatcherTestSuite) TestEventDispatcher_Dispatch() {
 	mh := &MockHandler{}
 	mh.On("Handle", &suite.event)
+
+	mh2 := &MockHandler{}
+	mh2.On("Handle", &suite.event)
+
 	suite.eventDispatcher.Register(suite.event.GetName(), mh)
+	suite.eventDispatcher.Register(suite.event.GetName(), mh2)
+
 	suite.eventDispatcher.Dispatch(&suite.event)
 	mh.AssertExpectations(suite.T())
+	mh2.AssertExpectations(suite.T())
+
 	mh.AssertNumberOfCalls(suite.T(), "Handle", 1)
+	mh2.AssertNumberOfCalls(suite.T(), "Handle", 1)
 }
 
 func (suite *EventDispatcherTestSuite) TestEventDispatcher_Remove() {
 	err := suite.eventDispatcher.Register(suite.event.GetName(), &suite.handler)
 	suite.Nil(err)
-	
+
 	err = suite.eventDispatcher.Register(suite.event.GetName(), &suite.handler2)
 	suite.Nil(err)
 	suite.Equal(2, len(suite.eventDispatcher.handlers[suite.event.GetName()]))
-	
+
 	suite.eventDispatcher.Remove(suite.event.GetName(), &suite.handler)
 	suite.Equal(1, len(suite.eventDispatcher.handlers[suite.event.GetName()]))
 

@@ -2,6 +2,7 @@ package events
 
 import (
 	"errors"
+	"sync"
 )
 
 var (
@@ -43,9 +44,14 @@ func (ed *EventDispatcher) Remove(eventName string, handler EventHandlerInterfac
 
 func (ed *EventDispatcher) Dispatch(event EventInterface) error {
 	if handlers, ok := ed.handlers[event.GetName()]; ok {
-		for _, h := range handlers {
-			h.Handle(event)
+		wg := &sync.WaitGroup{}
+		for _, handler := range handlers {
+			wg.Add(1)
+			// handler.Handle(event) // rodando de forma síncrona
+			go handler.Handle(event, wg) // rodando de forma assíncrona
 		}
+
+		wg.Wait()
 	}
 
 	return nil
