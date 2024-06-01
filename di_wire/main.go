@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"go_di_wire/product"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -14,8 +13,11 @@ func main() {
 		panic(err)
 	}
 
-	repository := product.NewProductRepository(db)
-	usecase := product.NewProductUseCase(repository)
+	// repository := product.NewProductRepository(db)
+	// usecase := product.NewProductUseCase(repository)
+
+	// utilizando wire
+	usecase := NewProductUseCase(db)
 
 	p, err := usecase.GetProductById(1)
 	if err != nil {
